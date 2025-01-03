@@ -3,26 +3,53 @@ import 'package:flutter/services.dart';
 
 import '../../models/shopping_item.dart';
 import '../../services/shopping_service.dart';
+import '../../utils/routes.dart';
 
-class UpdateShoppingItem extends StatefulWidget {
-  const UpdateShoppingItem({super.key});
+class UpdateShoppingItemScreen extends StatefulWidget {
+  final String itemName;
+
+  const UpdateShoppingItemScreen({
+    super.key,
+    required this.itemName,
+  });
 
   @override
-  State<UpdateShoppingItem> createState() => _UpdateShoppingItemState();
+  State<UpdateShoppingItemScreen> createState() => _UpdateShoppingItemScreenState();
 }
 
-class _UpdateShoppingItemState extends State<UpdateShoppingItem> {
+class _UpdateShoppingItemScreenState extends State<UpdateShoppingItemScreen> {
   final ApiService apiService = ApiService();
+  ShoppingItem _shoppingItem = ShoppingItem(name: '', amount: 0);
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
+  @override
+  void initState() {
+    super.initState();
+    _loadItem();
+  }
+
+  void _loadItem() async {
+    print('Load Item...');
+    try {
+      _shoppingItem = await apiService.getItemByName(widget.itemName);
+      setState(() {
+        _nameController.text = _shoppingItem.name;
+        _amountController.text = _shoppingItem.amount.toString();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void _updateItem() async {
     print('Update Item...');
     final updatedItem = ShoppingItem(name: _nameController.text, amount: int.parse(_amountController.text));
     try {
-      await apiService.updateItem(updatedItem.name, updatedItem);
+      await apiService.updateItem(widget.itemName, updatedItem);
+      Navigator.pushNamedAndRemoveUntil(context, shoppingItemListRoute, (route) => false);
     } catch (e) {
       print(e);
     }

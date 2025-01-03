@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:middleware_technology/utils/routes.dart';
 
 import '../../models/shopping_item.dart';
 import '../../services/shopping_service.dart';
 
-class CreateShoppingItem extends StatefulWidget {
-  const CreateShoppingItem({super.key});
+class CreateShoppingItemScreen extends StatefulWidget {
+  const CreateShoppingItemScreen({super.key});
 
   @override
-  State<CreateShoppingItem> createState() => _CreateShoppingItemState();
+  State<CreateShoppingItemScreen> createState() => _CreateShoppingItemScreenState();
 }
 
-class _CreateShoppingItemState extends State<CreateShoppingItem> {
+class _CreateShoppingItemScreenState extends State<CreateShoppingItemScreen> {
   final ApiService apiService = ApiService();
 
   final TextEditingController _nameController = TextEditingController();
@@ -23,6 +24,7 @@ class _CreateShoppingItemState extends State<CreateShoppingItem> {
     final newItem = ShoppingItem(name: _nameController.text, amount: int.parse(_amountController.text));
     try {
       await apiService.addItem(newItem);
+      Navigator.pushNamedAndRemoveUntil(context, shoppingItemListRoute, (route) => false);
     } catch (e) {
       print(e);
     }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:middleware_technology/presentation/pages/create_shopping_item.dart';
 import 'package:middleware_technology/presentation/pages/shopping_item_list.dart';
+import 'package:middleware_technology/presentation/pages/update_shopping_item.dart';
 import 'package:middleware_technology/utils/routes.dart';
+import 'package:middleware_technology/utils/update_shopping_item_arguments.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +23,23 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ShoppingItemsScreen(),
+      home: const ShoppingItemListScreen(),
       routes: {
-        createShoppingItemRoute: (context) => const CreateShoppingItem(),
+        shoppingItemListRoute: (context) => const ShoppingItemListScreen(),
+        createShoppingItemRoute: (context) => const CreateShoppingItemScreen(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case updateShoppingItemRoute:
+            final args = settings.arguments as UpdateShoppingItemArguments;
+            return MaterialPageRoute<String>(
+              builder: (BuildContext context) => UpdateShoppingItemScreen(
+                itemName: args.itemName,
+              ),
+              settings: settings,
+            );
+        }
+        return null;
       },
     );
   }

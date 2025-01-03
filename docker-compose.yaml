@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  flutter-frontend:
+    build:
+      context: ./flutter-app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - spring-backend
+
+  spring-backend:
+    build:
+      context: ./spring-boot-app
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"

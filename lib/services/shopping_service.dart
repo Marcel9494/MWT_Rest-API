@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/shopping_item.dart';
 
 class ApiService {
-  final String baseUrl = "https://miniature-space-waddle-jjj74w7pwjpfpxwp-8080.app.github.dev/api/shoppingItems";
+  final String baseUrl = "http://localhost:8080/api/shoppingItems";
 
   Future<List<ShoppingItem>> getAllItems() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -50,7 +50,8 @@ class ApiService {
 
   Future<void> deleteItem(String name) async {
     final response = await http.delete(Uri.parse("$baseUrl/$name"));
-    if (response.statusCode != 200) {
+    print(response.statusCode);
+    if (response.statusCode != 200 && response.statusCode != 204) {
       throw Exception("Failed to delete item");
     }
   }

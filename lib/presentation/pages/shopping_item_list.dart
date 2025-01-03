@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:middleware_technology/utils/routes.dart';
+import 'package:middleware_technology/utils/update_shopping_item_arguments.dart';
 
 import '../../models/shopping_item.dart';
 import '../../services/shopping_service.dart';
 
-class ShoppingItemsScreen extends StatefulWidget {
-  const ShoppingItemsScreen({super.key});
+class ShoppingItemListScreen extends StatefulWidget {
+  const ShoppingItemListScreen({super.key});
 
   @override
-  _ShoppingItemsScreenState createState() => _ShoppingItemsScreenState();
+  _ShoppingItemListScreenState createState() => _ShoppingItemListScreenState();
 }
 
-class _ShoppingItemsScreenState extends State<ShoppingItemsScreen> {
+class _ShoppingItemListScreenState extends State<ShoppingItemListScreen> {
   final ApiService apiService = ApiService();
   List<ShoppingItem> shoppingItems = [];
 
@@ -49,12 +50,21 @@ class _ShoppingItemsScreenState extends State<ShoppingItemsScreen> {
         itemCount: shoppingItems.length,
         itemBuilder: (context, index) {
           final item = shoppingItems[index];
-          return ListTile(
-            title: Text('Name: ${item.name}'),
-            subtitle: Text('Amount: ${item.amount}'),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete_rounded, color: Colors.red),
-              onPressed: () => _deleteItem(item.name),
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(
+              context,
+              updateShoppingItemRoute,
+              arguments: UpdateShoppingItemArguments(item.name),
+            ),
+            child: Card(
+              child: ListTile(
+                title: Text('Name: ${item.name}'),
+                subtitle: Text('Amount: ${item.amount}'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete_rounded, color: Colors.red),
+                  onPressed: () => _deleteItem(item.name),
+                ),
+              ),
             ),
           );
         },
