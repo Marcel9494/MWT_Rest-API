@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/shopping_item.dart';
 
 class ApiService {
-  final String baseUrl = "http://localhost:8080/api/shoppingItems";
+  // Backend URL wird ausgelesen
+  final String? baseUrl = dotenv.env['BACKENDURL'];
 
   Future<List<ShoppingItem>> getAllItems() async {
-    final response = await http.get(Uri.parse(baseUrl));
+    final response = await http.get(Uri.parse(baseUrl!));
     if (response.statusCode == 200) {
       final List<dynamic> items = jsonDecode(response.body);
       return items.map((item) => ShoppingItem.fromJson(item)).toList();
@@ -28,7 +30,7 @@ class ApiService {
 
   Future<void> addItem(ShoppingItem item) async {
     final response = await http.post(
-      Uri.parse(baseUrl),
+      Uri.parse(baseUrl!),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(item.toJson()),
     );

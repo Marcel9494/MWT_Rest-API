@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:middleware_technology/presentation/pages/create_shopping_item.dart';
 import 'package:middleware_technology/presentation/pages/shopping_item_list.dart';
 import 'package:middleware_technology/presentation/pages/update_shopping_item.dart';
 import 'package:middleware_technology/utils/routes.dart';
 import 'package:middleware_technology/utils/update_shopping_item_arguments.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+  await dotenv.load(fileName: "umgebungsvariablen.env");
 }
 
 class MyApp extends StatelessWidget {
