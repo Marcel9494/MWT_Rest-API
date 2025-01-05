@@ -36,5 +36,5 @@ Since the processes run in Docker, they can be easily compared between Dev and P
 11. Logs
 Since the application runs in Docker containers, the responsibility for the logs lies with Docker and not directly with the application itself. The logs can then be viewed in the respective Docker containers and evaluated if necessary.
 
-12 Admin processes
+12. Admin processes
 Processes such as the migration of data, e.g. adding new fields to the items (category, discounts, etc.) should then take place once outside the application and not within the actual application.
